@@ -97,6 +97,13 @@ echo "Created desktop entry at $INSTALL_APPS/$BINARY_NAME.desktop"
 ln -sf "$INSTALL_BIN/$BINARY_NAME" "$INSTALL_BIN/$APP_NAME"
 echo "Created symlink $INSTALL_BIN/$APP_NAME -> $BINARY_NAME"
 
+# Backup Symlink to ~/.local/bin if we installed elsewhere
+if [ "$INSTALL_BIN" != "$HOME/.local/bin" ] && [ -d "$HOME/.local/bin" ]; then
+    ln -sf "$INSTALL_BIN/$BINARY_NAME" "$HOME/.local/bin/$APP_NAME"
+    ln -sf "$INSTALL_BIN/$BINARY_NAME" "$HOME/.local/bin/$BINARY_NAME"
+    echo "Created backup symlinks in $HOME/.local/bin"
+fi
+
 # 6. Refresh
 echo "Refreshing desktop database..."
 update-desktop-database "$INSTALL_APPS" 2>/dev/null || true
