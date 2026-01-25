@@ -13,8 +13,6 @@ import (
 	"spotiflac/backend"
 	"strings"
 	"time"
-
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 var isrcRegex = regexp.MustCompile(`^[A-Z]{2}[A-Z0-9]{3}\d{2}\d{5}$`)
@@ -895,19 +893,19 @@ type DownloadFFmpegResponse struct {
 }
 
 func (a *App) DownloadFFmpeg() DownloadFFmpegResponse {
-	runtime.EventsEmit(a.ctx, "ffmpeg:status", "starting")
+	runtimeEventsEmit(a.ctx, "ffmpeg:status", "starting")
 	err := backend.DownloadFFmpeg(func(progress int) {
-		runtime.EventsEmit(a.ctx, "ffmpeg:progress", progress)
+		runtimeEventsEmit(a.ctx, "ffmpeg:progress", progress)
 	})
 	if err != nil {
-		runtime.EventsEmit(a.ctx, "ffmpeg:status", "failed")
+		runtimeEventsEmit(a.ctx, "ffmpeg:status", "failed")
 		return DownloadFFmpegResponse{
 			Success: false,
 			Error:   err.Error(),
 		}
 	}
 
-	runtime.EventsEmit(a.ctx, "ffmpeg:status", "completed")
+	runtimeEventsEmit(a.ctx, "ffmpeg:status", "completed")
 	return DownloadFFmpegResponse{
 		Success: true,
 		Message: "FFmpeg installed successfully",

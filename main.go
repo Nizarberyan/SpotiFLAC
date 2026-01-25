@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"embed"
 	"flag"
 	"fmt"
 	"log"
@@ -16,15 +15,7 @@ import (
 	"time"
 
 	"spotiflac/backend"
-
-	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
-	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
-
-//go:embed all:frontend/dist
-var assets embed.FS
 
 func main() {
 
@@ -80,40 +71,8 @@ func main() {
 		}
 	}
 
-	// Normal GUI Start
-	err := wails.Run(&options.App{
-		Title:     "SpotiFLAC",
-		Width:     1024,
-		Height:    600,
-		MinWidth:  1024,
-		MinHeight: 600,
-		Frameless: true,
-		AssetServer: &assetserver.Options{
-			Assets: assets,
-		},
-		BackgroundColour: &options.RGBA{R: 0, G: 0, B: 0, A: 255},
-		OnStartup:        app.startup,
-		OnShutdown:       app.shutdown,
-		DragAndDrop: &options.DragAndDrop{
-			EnableFileDrop:     true,
-			DisableWebViewDrop: false,
-			CSSDropProperty:    "--wails-drop-target",
-			CSSDropValue:       "drop",
-		},
-		Bind: []interface{}{
-			app,
-		},
-		Windows: &windows.Options{
-			WebviewIsTransparent:              false,
-			WindowIsTranslucent:               false,
-			DisableWindowIcon:                 false,
-			DisableFramelessWindowDecorations: false,
-		},
-	})
-
-	if err != nil {
-		log.Fatal("Error:", err.Error())
-	}
+	// Normal GUI Start (or error if headless)
+	startGUI(app)
 }
 
 func handleSetOutput(path string) {
