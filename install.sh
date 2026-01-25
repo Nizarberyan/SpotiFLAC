@@ -110,6 +110,19 @@ update-desktop-database "$INSTALL_APPS" 2>/dev/null || true
 
 echo "Done! You strictly might need to log out/in or run 'r' in Hyprland/etc for the icon to appear."
 
+# Check if INSTALL_BIN is in PATH
+case ":$PATH:" in
+    *":$INSTALL_BIN:"*) ;;
+    *)
+        echo ""
+        echo "WARNING: $INSTALL_BIN is not in your PATH."
+        echo "You need to add it to run 'SpotiFLAC' from anywhere."
+        echo "Run this command to fix it temporarily:"
+        echo "  export PATH=\"\$PATH:$INSTALL_BIN\""
+        echo "To fix it permanently, add the line above to your ~/.bashrc or ~/.zshrcfile."
+        ;;
+esac
+
 # Check for shadowing
 RESOLVED_BIN=$(command -v "$BINARY_NAME" || true)
 if [ -n "$RESOLVED_BIN" ] && [ "$RESOLVED_BIN" != "$INSTALL_BIN/$BINARY_NAME" ]; then
