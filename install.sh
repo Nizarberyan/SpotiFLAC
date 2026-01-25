@@ -51,8 +51,18 @@ fi
 
 # 2. Install Binary
 mkdir -p "$INSTALL_BIN"
+rm -f "$INSTALL_BIN/$BINARY_NAME" "$INSTALL_BIN/$APP_NAME" # Force remove old versions
 cp "$BUILD_BIN" "$INSTALL_BIN/$BINARY_NAME"
 echo "Installed binary to $INSTALL_BIN/$BINARY_NAME"
+
+# Verify installation matches build
+BUILT_HASH=$(md5sum "$BUILD_BIN" | awk '{print $1}')
+INSTALLED_HASH=$(md5sum "$INSTALL_BIN/$BINARY_NAME" | awk '{print $1}')
+
+if [ "$BUILT_HASH" != "$INSTALLED_HASH" ]; then
+    echo "Error: Installed binary hash ($INSTALLED_HASH) does not match build ($BUILT_HASH)!"
+    exit 1
+fi
 
 # 3. Install Icon
 mkdir -p "$INSTALL_ICONS"
