@@ -36,7 +36,6 @@ func main() {
 	flag.Parse()
 
 	args := flag.Args()
-	fmt.Printf("DEBUG: Found %d arguments: %v\n", len(args), args)
 
 	// Handle Persistent Config Set
 	if *setOutput != "" {
