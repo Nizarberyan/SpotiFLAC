@@ -22,6 +22,25 @@ Get Spotify tracks in true FLAC from Tidal, Qobuz & Amazon Music — no account 
 
 ![Image](https://github.com/user-attachments/assets/eba25a4a-0eb9-4d88-9646-80c7658a7de6)
 
+## Command-Line Usage
+
+You can build and run SpotiFLAC as a completely headless CLI application. This is ideal for server environments or users who prefer a terminal interface:
+
+```sh
+# Build for CLI usage
+go build -tags headless -o spotiflac .
+
+# Download a track, album, or playlist
+./spotiflac "https://open.spotify.com/track/..."
+
+# Set a persistent default output directory
+./spotiflac -set-output /path/to/custom/dir
+
+# Additional options
+./spotiflac -o /path/to/custom/dir "https://..."
+./spotiflac -c 5 -delay 1s "https://..."
+```
+
 ## Other projects
 
 ### [SpotiDownloader](https://github.com/afkarxyz/SpotiDownloader) 
